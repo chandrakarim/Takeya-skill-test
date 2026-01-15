@@ -1,5 +1,5 @@
 ## Example Responses Login
-![cp_login](https://raw.githubusercontent.com/chandrakarim/Takeya-skill-test/main/1.cp_login.png)
+![cp_login](https://raw.githubusercontent.com/chandrakarim/Takeya-skill-test/main/cp_login.png)
 
 
 ## Database Snapshot
