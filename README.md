@@ -1,9 +1,14 @@
 ## Example Responses Login
 ![cp_login](https://raw.githubusercontent.com/chandrakarim/Takeya-skill-test/main/cp_login.png)
 
+## Example Responses index
+![cp_index_post](https://raw.githubusercontent.com/chandrakarim/Takeya-skill-test/main/cp_index_post.png)
+
+## Example Responses index
+![cp_create_scheduled_post](https://raw.githubusercontent.com/chandrakarim/Takeya-skill-test/main/cp_create_scheduled_post.png)
 
 ## Database Snapshot
-![Posts Table](screenshots/posts_table.png)
+![cp_sqilite](https://raw.githubusercontent.com/chandrakarim/Takeya-skill-test/main/cp_sqilite.png)
 
 # Takeya-skill-test– Post RESTful API
 
