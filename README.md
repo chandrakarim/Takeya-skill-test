@@ -51,13 +51,17 @@ No cron job is required. Scheduled posts become active automatically based on ti
 
 | Route              | Method    | Description                                               |
 | ------------------ | --------- | --------------------------------------------------------- |
+| `/login`           | POST      | Authenticate user, returns JSON with message & user data  |
+| `/logout`          | POST      | Logout user, invalidate session, returns JSON message     |
+| `/user`            | GET       | Check authenticated user, returns user data               |
 | `/posts`           | GET       | Paginated list (20/page) of active posts with author data |
-| `/posts/create`    | GET       | Auth-only, returns `posts.create`                         |
-| `/posts`           | POST      | Auth-only, create new post                                |
+| `/posts/create`    | GET       | Auth-only, returns string `posts.create`                  |
+| `/posts`           | POST      | Auth-only, create new post (normal, draft, scheduled)     |
 | `/posts/{id}`      | GET       | Show active post, 404 if draft/scheduled                  |
-| `/posts/{id}/edit` | GET       | Author-only, returns `posts.edit`                         |
+| `/posts/{id}/edit` | GET       | Author-only, returns string `posts.edit`                  |
 | `/posts/{id}`      | PUT/PATCH | Author-only, update post                                  |
 | `/posts/{id}`      | DELETE    | Author-only, delete post                                  |
+
 
 All responses are returned in **JSON format**, except `create` and `edit` routes which return plain strings as required.
 
@@ -104,7 +108,31 @@ php artisan test
 ```
 
 ---
+Postman Workflow Suggestion
 
+Step-by-step testing:
+
+Login → POST /login (form-urlencoded, authenticated session)
+
+Check user → GET /user (optional)
+
+Index posts → GET /posts
+
+Show post → GET /posts/{id} (active & draft/scheduled 404)
+
+Create post → POST /posts (normal, draft, scheduled)
+
+Create post page → GET /posts/create (return posts.create)
+
+Edit post page → GET /posts/{id}/edit (author-only)
+
+Update post → PUT /posts/{id} (author-only)
+
+Delete post → DELETE /posts/{id} (author-only)
+
+Logout → POST /logout
+
+If CSRF is enabled, include GET /sanctum/csrf-cookie before login or post/update/delete requests.
 ## Notes for Reviewer
 
 * View files are intentionally omitted (API-focused)
@@ -117,3 +145,4 @@ php artisan test
 
 **Chandra Karim**
 Repository: [https://github.com/chandrakarim/Takeya-skill-test.git](https://github.com/chandrakarim/Takeya-skill-test.git)
+
