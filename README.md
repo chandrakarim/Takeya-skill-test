@@ -4,7 +4,7 @@
 ## Example Responses index
 ![cp_index_post](https://raw.githubusercontent.com/chandrakarim/Takeya-skill-test/main/cp_index_post.png)
 
-## Example Responses index
+## Example Responses create scheduled post
 ![cp_create_scheduled_post](https://raw.githubusercontent.com/chandrakarim/Takeya-skill-test/main/cp_create_scheduled_post.png)
 
 ## Database Snapshot
