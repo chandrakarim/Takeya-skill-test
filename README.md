@@ -108,31 +108,32 @@ php artisan test
 ```
 
 ---
-Postman Workflow Suggestion
+## Postman Workflow Suggestion
 
 Step-by-step testing:
 
-Login → POST /login (form-urlencoded, authenticated session)
+* Login → POST /login (form-urlencoded, authenticated session)
 
-Check user → GET /user (optional)
+* Check user → GET /user (optional)
 
-Index posts → GET /posts
+* Index posts → GET /posts
 
-Show post → GET /posts/{id} (active & draft/scheduled 404)
+* Show post → GET /posts/{id} (active & draft/scheduled 404)
 
-Create post → POST /posts (normal, draft, scheduled)
+* Create post → POST /posts (normal, draft, scheduled)
 
-Create post page → GET /posts/create (return posts.create)
+* Create post page → GET /posts/create (return posts.create)
 
-Edit post page → GET /posts/{id}/edit (author-only)
+* Edit post page → GET /posts/{id}/edit (author-only)
 
-Update post → PUT /posts/{id} (author-only)
+* Update post → PUT /posts/{id} (author-only)
 
-Delete post → DELETE /posts/{id} (author-only)
+* Delete post → DELETE /posts/{id} (author-only)
 
-Logout → POST /logout
-
+* Logout → POST /logout
+```bash
 If CSRF is enabled, include GET /sanctum/csrf-cookie before login or post/update/delete requests.
+```
 ## Notes for Reviewer
 
 * View files are intentionally omitted (API-focused)
@@ -145,4 +146,3 @@ If CSRF is enabled, include GET /sanctum/csrf-cookie before login or post/update
 
 **Chandra Karim**
 Repository: [https://github.com/chandrakarim/Takeya-skill-test.git](https://github.com/chandrakarim/Takeya-skill-test.git)
-
