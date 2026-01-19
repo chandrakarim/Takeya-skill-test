@@ -15,74 +15,102 @@
 
 ![cp_sqilite](https://raw.githubusercontent.com/chandrakarim/Takeya-skill-test/main/cp_sqilite.png)
 
+## Takeya Skill Test – Post RESTful API (Laravel 12)
+
 ## Overview
 
-This repository contains a **Takeya-skill-test** implementation focusing on:
+This repository contains an implementation of the **Laravel Skill Test** for building
+RESTful routes for a **Post** model.
 
-* RESTful Post API
-* Draft, Scheduled, and Published posts
-* Session & cookie-based authentication
-* Authorization (only post authors can update/delete)
-* JSON responses suitable for views
+The implementation focuses on:
 
-The implementation follows **Laravel 12 best practices** and the official documentation.
+- RESTful API design
+- Draft, Scheduled, and Published post handling
+- Session & cookie-based authentication
+- Authorization using Laravel Policies
+- JSON responses suitable for passing to views
 
----
-
-## Requirements Summary
-
-### Post Status
-
-Posts are classified as:
-
-* **Draft** → not visible publicly
-* **Scheduled** → visible only after `published_at`
-* **Published** → visible immediately
-
-No cron job is required. Scheduled posts become active automatically based on time comparison.
+All features are implemented following **Laravel 12 best practices** and the official
+Laravel documentation.
 
 ---
 
-## Authentication
+## Specifications
 
-* Uses **Laravel built-in session & cookie authentication**
-* Token-based authentication (Sanctum / Passport) is **not used**
+### Framework & Environment
+
+- Laravel 12
+- PHP 8.4
+- Database: SQLite
+- Authentication: Laravel built-in session & cookies
+- Token-based authentication (Sanctum / Passport) is not used
+- View files are not required and intentionally omitted
 
 ---
 
-## API Routes
+## Post Status Logic
+
+Post visibility is determined based on existing table structure and business rules:
+
+- **Draft**
+  - `is_draft = true`
+  - Not publicly accessible
+
+- **Scheduled**
+  - `is_draft = false`
+  - `published_at` is in the future
+  - Automatically becomes visible when the publish date is reached
+  - No cron job is required
+
+- **Published (Active)**
+  - `is_draft = false`
+  - `published_at` is null or in the past
+
+---
+
+## Routes
 
 | Route              | Method    | Description                                               |
 | ------------------ | --------- | --------------------------------------------------------- |
-| `/login`           | POST      | Authenticate user, returns JSON with message & user data  |
-| `/logout`          | POST      | Logout user, invalidate session, returns JSON message     |
-| `/user`            | GET       | Check authenticated user, returns user data               |
 | `/posts`           | GET       | Paginated list (20/page) of active posts with author data |
 | `/posts/create`    | GET       | Auth-only, returns string `posts.create`                  |
-| `/posts`           | POST      | Auth-only, create new post (normal, draft, scheduled)     |
-| `/posts/{id}`      | GET       | Show active post, 404 if draft/scheduled                  |
+| `/posts`           | POST      | Auth-only, create a new post                              |
+| `/posts/{id}`      | GET       | Show active post, returns 404 if draft or scheduled       |
 | `/posts/{id}/edit` | GET       | Author-only, returns string `posts.edit`                  |
 | `/posts/{id}`      | PUT/PATCH | Author-only, update post                                  |
 | `/posts/{id}`      | DELETE    | Author-only, delete post                                  |
 
+### Response Format
 
-All responses are returned in **JSON format**, except `create` and `edit` routes which return plain strings as required.
+- All endpoints return **JSON responses**, except:
+  - `/posts/create`
+  - `/posts/{id}/edit`
+
+These two routes return plain strings as required by the specification.
 
 ---
 
-## Database
+## Authentication & Authorization
 
-* Default database: **SQLite**
-* Sample users and posts are provided via seeder
+- Uses Laravel’s built-in **session & cookie-based authentication**
+- Authorization is implemented using **PostPolicy**
+- Only the post author is allowed to:
+  - Edit a post
+  - Update a post
+  - Delete a post
+
+---
+
+## Database & Seeding
+
+- Default database: **SQLite**
+- Sample users and posts are provided via seeders
 
 ```bash
 php artisan migrate --seed
 ```
 
----
-
-## Setup Instructions
-
+- Setup Instructions
 ```bash
 git clone https://github.com/chandrakarim/Takeya-skill-test.git
 cd Takeya-skill-test
@@ -92,60 +120,37 @@ php artisan key:generate
 php artisan migrate --seed
 php artisan serve
 ```
-
----
-
 ## Feature Tests
 
-Feature tests are included to verify:
+Feature tests are included to validate all required behaviors:
 
-* Index shows only active posts
-* Draft & scheduled posts return 404 on show
-* Authenticated users can create posts
-* Only post authors can update or delete posts
+- Index returns only active posts
 
-Run tests using:
+- Draft and scheduled posts return 404 on show
 
+- Authenticated users can create posts
+
+- Only post authors can update posts
+
+- Only post authors can delete posts
+
+Run all tests using:
 ```bash
 php artisan test
 ```
+All tests pass successfully.
 
----
-## Postman Workflow Suggestion
-
-Step-by-step testing:
-
-* Login → POST /login (form-urlencoded, authenticated session)
-
-* Check user → GET /user (optional)
-
-* Index posts → GET /posts
-
-* Show post → GET /posts/{id} (active & draft/scheduled 404)
-
-* Create post → POST /posts (normal, draft, scheduled)
-
-* Create post page → GET /posts/create (return posts.create)
-
-* Edit post page → GET /posts/{id}/edit (author-only)
-
-* Update post → PUT /posts/{id} (author-only)
-
-* Delete post → DELETE /posts/{id} (author-only)
-
-* Logout → POST /logout
-```bash
-If CSRF is enabled, include GET /sanctum/csrf-cookie before login or post/update/delete requests.
-```
 ## Notes for Reviewer
 
-* View files are intentionally omitted (API-focused)
-* `.env`, `vendor/`, and `node_modules/` are excluded from repository
-* Commit history is preserved and uses meaningful messages
+This project is API-focused; view files are intentionally omitted
 
----
+Authorization rules are handled using Laravel Policies
+
+Commit history is preserved with clear and meaningful messages
+
+.env, vendor/, and node_modules/ are excluded from the repository
 
 ## Author
 
-**Chandra Karim**
-Repository: [https://github.com/chandrakarim/Takeya-skill-test.git](https://github.com/chandrakarim/Takeya-skill-test.git)
+Chandra Karim
+Repository: https://github.com/chandrakarim/Takeya-skill-test.git
