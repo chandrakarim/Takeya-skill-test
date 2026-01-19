@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PostController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
         $posts = Post::where('is_draft', false)
@@ -18,15 +21,13 @@ class PostController extends Controller
             ->with('user')
             ->paginate(20);
 
-        // $post = Post::all();
-
         return response()->json($posts);
     }
 
     public function show(Post $post)
     {
         if ($post->is_draft || ($post->published_at && $post->published_at->isFuture())) {
-            return response()->json(['message' => 'Post not found'], 404);
+            abort(404);
         }
 
         return response()->json($post->load('user'));
@@ -34,16 +35,14 @@ class PostController extends Controller
 
     public function store(StorePostRequest $request)
     {
-        $post = auth()->user()->posts()->create($request->validated());
+        $post = $request->user()->posts()->create($request->validated());
 
         return response()->json($post, 201);
     }
 
     public function update(UpdatePostRequest $request, Post $post)
     {
-        if ($post->user_id != auth()->id()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
+        $this->authorize('update', $post); // 🔥 INI KUNCI
 
         $post->update($request->validated());
 
@@ -52,9 +51,7 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        if ($post->user_id != auth()->id()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
+        $this->authorize('delete', $post); // 🔥 INI KUNCI
 
         $post->delete();
 

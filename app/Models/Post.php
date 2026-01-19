@@ -29,5 +29,6 @@ class Post extends Model
 
     protected $casts = [
         'published_at' => 'datetime',
+        'is_draft' => 'boolean',
     ];
 }
