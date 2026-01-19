@@ -80,7 +80,6 @@ Post visibility is determined based on existing table structure and business rul
 | `/posts/{id}`      | PUT/PATCH | Author-only, update post                                  |
 | `/posts/{id}`      | DELETE    | Author-only, delete post                                  |
 
-
 ### Example JSON Responses
 - GET /posts
 ~~~
@@ -139,27 +138,27 @@ Post visibility is determined based on existing table structure and business rul
 - POST /store
 ~~~
 {
-    "title": "First Post",
+    "title": "First Posts",
     "content": "Content here",
     "is_draft": false,
     "published_at": null,
     "user_id": 1,
-    "updated_at": "2026-01-19T12:02:32.000000Z",
-    "created_at": "2026-01-19T12:02:32.000000Z",
-    "id": 118
+    "updated_at": "2026-01-19T16:34:59.000000Z",
+    "created_at": "2026-01-19T16:34:59.000000Z",
+    "id": 101
 }
 ~~~
 - PUT /update
 ~~~
 {
-    "id": 116,
+    "id": 101,
     "user_id": 1,
     "title": "Hallo Januari Hari Senin 19/01/2026",
     "content": "Updated content",
     "is_draft": false,
     "published_at": null,
-    "created_at": "2026-01-19T08:53:23.000000Z",
-    "updated_at": "2026-01-19T09:02:24.000000Z"
+    "created_at": "2026-01-19T16:34:59.000000Z",
+    "updated_at": "2026-01-19T16:39:21.000000Z"
 }
 ~~~
 - DELETE /destroy
@@ -168,8 +167,6 @@ Post visibility is determined based on existing table structure and business rul
     "message": "Post deleted"
 }
 ~~~
-
-
 ### Response Format
 
 - All endpoints return **JSON responses**, except:
