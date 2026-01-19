@@ -80,6 +80,7 @@ Post visibility is determined based on existing table structure and business rul
 | `/posts/{id}`      | PUT/PATCH | Author-only, update post                                  |
 | `/posts/{id}`      | DELETE    | Author-only, delete post                                  |
 
+
 ### Example JSON Responses
 - GET /posts
 ~~~
@@ -167,6 +168,8 @@ Post visibility is determined based on existing table structure and business rul
     "message": "Post deleted"
 }
 ~~~
+
+
 ### Response Format
 
 - All endpoints return **JSON responses**, except:
