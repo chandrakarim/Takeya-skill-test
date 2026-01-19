@@ -21,7 +21,9 @@ class PostController extends Controller
             ->with('user')
             ->paginate(20);
 
-        return response()->json($posts);
+        return response()->json([
+            'data' => $posts,
+        ]);
     }
 
     public function show(Post $post)
@@ -30,14 +32,18 @@ class PostController extends Controller
             abort(404);
         }
 
-        return response()->json($post->load('user'));
+        return response()->json([
+            'data' => $post->load('user'),
+        ]);
     }
 
     public function store(StorePostRequest $request)
     {
         $post = $request->user()->posts()->create($request->validated());
 
-        return response()->json($post, 201);
+        return response()->json([
+            'data' => $post,
+        ], 201);
     }
 
     public function update(UpdatePostRequest $request, Post $post)
@@ -45,7 +51,9 @@ class PostController extends Controller
         $this->authorize('update', $post);
         $post->update($request->validated());
 
-        return response()->json($post);
+        return response()->json([
+            'data' => $post,
+        ]);
     }
 
     public function destroy(Post $post)
@@ -54,7 +62,9 @@ class PostController extends Controller
 
         $post->delete();
 
-        return response()->json(['message' => 'Post deleted']);
+        return response()->json([
+            'message' => 'Post deleted',
+        ]);
     }
 
     public function create()
