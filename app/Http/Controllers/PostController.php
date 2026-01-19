@@ -42,8 +42,7 @@ class PostController extends Controller
 
     public function update(UpdatePostRequest $request, Post $post)
     {
-        $this->authorize('update', $post); // 🔥 INI KUNCI
-
+        $this->authorize('update', $post);
         $post->update($request->validated());
 
         return response()->json($post);
@@ -51,10 +50,22 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        $this->authorize('delete', $post); // 🔥 INI KUNCI
+        $this->authorize('delete', $post);
 
         $post->delete();
 
         return response()->json(['message' => 'Post deleted']);
+    }
+
+    public function create()
+    {
+        return 'posts.create';
+    }
+
+    public function edit(Post $post)
+    {
+        $this->authorize('update', $post);
+
+        return 'posts.edit';
     }
 }
