@@ -13,11 +13,7 @@ class PostController extends Controller
 
     public function index()
     {
-        $posts = Post::where('is_draft', false)
-            ->where(function ($query) {
-                $query->whereNull('published_at')
-                    ->orWhere('published_at', '<=', now());
-            })
+        $posts = Post::active()
             ->with('user')
             ->paginate(20);
 
@@ -28,9 +24,11 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        if ($post->is_draft || ($post->published_at && $post->published_at->isFuture())) {
-            abort(404);
-        }
+        abort_if(
+            $post->is_draft ||
+                ($post->published_at && $post->published_at->isFuture()),
+            404
+        );
 
         return response()->json([
             'data' => $post->load('user'),

@@ -25,4 +25,14 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function scopeActive($query)
+    {
+        return $query
+            ->where('is_draft', false)
+            ->where(function ($q) {
+                $q->whereNull('published_at')
+                    ->orWhere('published_at', '<=', now());
+            });
+    }
 }
