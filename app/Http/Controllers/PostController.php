@@ -17,36 +17,35 @@ class PostController extends Controller
             ->with('user')
             ->paginate(20);
 
-        return response()->json([
-            'data' => $posts,
-        ]);
+        return response()->json($posts);
     }
 
-    public function show(Post $post)
+    public function show($id)
     {
-        abort_if(
-            $post->is_draft ||
-                ($post->published_at && $post->published_at->isFuture()),
-            404
-        );
+        $post = Post::active()
+            ->with('user')
+            ->findOrFail($id);
 
-        return response()->json([
-            'data' => $post->load('user'),
-        ]);
+        return response()->json($post);
     }
 
     public function store(StorePostRequest $request)
     {
-        $post = $request->user()->posts()->create($request->validated());
+        $post = $request->user()
+            ->posts()
+            ->create($request->validated());
 
         return response()->json([
             'data' => $post,
         ], 201);
     }
 
-    public function update(UpdatePostRequest $request, Post $post)
+    public function update(UpdatePostRequest $request, $id)
     {
+        $post = Post::findOrFail($id);
+
         $this->authorize('update', $post);
+
         $post->update($request->validated());
 
         return response()->json([
@@ -54,8 +53,10 @@ class PostController extends Controller
         ]);
     }
 
-    public function destroy(Post $post)
+    public function destroy($id)
     {
+        $post = Post::findOrFail($id);
+
         $this->authorize('delete', $post);
 
         $post->delete();
@@ -70,8 +71,10 @@ class PostController extends Controller
         return 'posts.create';
     }
 
-    public function edit(Post $post)
+    public function edit($id)
     {
+        $post = Post::findOrFail($id);
+
         $this->authorize('update', $post);
 
         return 'posts.edit';
